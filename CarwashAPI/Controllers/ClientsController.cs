@@ -78,7 +78,26 @@ namespace CarwashAPI.Controllers
         public async Task<ActionResult<Client>> PostClient(Client client)
         {
             _context.Clients.Add(client);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Логируем основную ошибку
+                Console.WriteLine("Ошибка при сохранении в БД:");
+                Console.WriteLine(ex.Message);
+
+                // Подробности (вложенное исключение, например SqlException)
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Внутреннее исключение:");
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+
+                // Можно пробросить дальше или вернуть 500
+                throw;
+            }
 
             return CreatedAtAction("GetClient", new { id = client.Id }, client);
         }
