@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CarwashDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,3 +29,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

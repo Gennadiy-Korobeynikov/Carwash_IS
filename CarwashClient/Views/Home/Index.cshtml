@@ -2,7 +2,36 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+<button id="btnGetClients">Получить клиентов</button>
+
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+<div id="clientsResult"></div>
+
+
+<script>
+    document.getElementById('btnGetClients').addEventListener('click', function() {
+        fetch('https://localhost:44316/api/clients')  // URL API — укажи свой правильный порт
+        .then(response => {
+          if (!response.ok) throw new Error('Ошибка HTTP: ' + response.status);
+          return response.json();
+        })
+        .then(data => {
+          // Выведем результат (например, список клиентов) в div
+          let html = '<ul>';
+          data.forEach(client => {
+            html += `<li>${client.name} — ${client.email}</li>`;  // адаптируй под структуру модели
+          });
+          html += '</ul>';
+          document.getElementById('clientsResult').innerHTML = html;
+        })
+        .catch(error => {
+          document.getElementById('clientsResult').innerText = error;
+        });
+    });
+</script>
