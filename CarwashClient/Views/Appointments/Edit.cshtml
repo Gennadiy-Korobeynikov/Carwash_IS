@@ -1,0 +1,68 @@
+﻿@model CarwashClient.Models.AppointmentFormVM
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Создание записи</h1>
+
+<hr />
+
+<form asp-action="Edit">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Appointment.DateTime" class="form-label"></label>
+        <input asp-for="Appointment.DateTime" type="datetime-local" class="form-control" />
+        <span asp-validation-for="Appointment.DateTime" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Appointment.Cost" class="form-label"></label>
+        <input asp-for="Appointment.Cost" class="form-control" />
+        <span asp-validation-for="Appointment.Cost" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Appointment.ClientId" class="form-label"></label>
+        <select asp-for="Appointment.ClientId" asp-items="Model.Clients" class="form-control"></select>
+        <span asp-validation-for="Appointment.ClientId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Appointment.EmployeeId" class="form-label"></label>
+        <select asp-for="Appointment.EmployeeId" asp-items="Model.Employees" class="form-control"></select>
+        <span asp-validation-for="Appointment.EmployeeId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Appointment.StatusId" class="form-label"></label>
+        <select asp-for="Appointment.StatusId" asp-items="Model.Statuses" class="form-control"></select>
+        <span asp-validation-for="Appointment.StatusId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Appointment.SpotId" class="form-label"></label>
+        <select asp-for="Appointment.SpotId" asp-items="Model.Spots" class="form-control"></select>
+        <span asp-validation-for="Appointment.SpotId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Appointment.ServiceIds" class="form-label"></label>
+        <select asp-for="Appointment.ServiceIds" asp-items="Model.Services" class="form-control" multiple size="6"></select>
+        <span asp-validation-for="Appointment.ServiceIds" class="text-danger"></span>
+    </div>
+
+    <input type="submit" value="Save" class="btn btn-primary" />
+</form>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary">Назад к списку</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

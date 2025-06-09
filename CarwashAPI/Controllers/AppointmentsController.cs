@@ -57,6 +57,7 @@ namespace CarwashAPI.Controllers
                 .Include(a => a.Employee)
                 .Include(a => a.Spot)
                 .Include(a => a.Status)
+                .Include(a => a.Services)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (appointment == null)
@@ -98,14 +99,7 @@ namespace CarwashAPI.Controllers
             appointment.StatusId = dto.StatusId;
             appointment.SpotId = dto.SpotId;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException e)
-            {
-                return StatusCode(500, e.InnerException?.Message ?? e.Message);
-            }
+            await TrySave();
 
             return NoContent();
         }

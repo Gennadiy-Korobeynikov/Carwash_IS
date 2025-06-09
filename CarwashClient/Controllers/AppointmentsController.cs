@@ -29,6 +29,7 @@ namespace CarwashClient.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var appointment = await _httpClient.GetFromJsonAsync<AppointmentVM>($"{_apiBaseUrl}/{id}");
+           
             return View(appointment);
         }
 
@@ -98,6 +99,24 @@ namespace CarwashClient.Controllers
                 .ToList();
         }
 
+        private async Task<List<SelectListItem>> LoadMultiSelectList(string endpoint, List<int> selectedIds)
+        {
+            var response = await _httpClient.GetAsync($"{_apiBaseBaseUrl}/{endpoint}");
+            var json = await response.Content.ReadAsStringAsync();
+
+            var items = JsonSerializer.Deserialize<List<IdNameDto>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return items.Select(i => new SelectListItem
+            {
+                Value = i.Id.ToString(),
+                Text = i.Name,
+                Selected = selectedIds.Contains(i.Id)
+            }).ToList();
+        }
+
         private class IdNameDto
         {
             public int Id { get; set; }
@@ -107,23 +126,61 @@ namespace CarwashClient.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var appointment = await _httpClient.GetFromJsonAsync<AppointmentVM>($"{_apiBaseUrl}/{id}");
-            return View(appointment);
+            var appointment = await _httpClient.GetFromJsonAsync<AppointmentCreateDto>($"{_apiBaseUrl}/{id}");
+
+            if (appointment == null)
+                return NotFound();
+
+            var vm = new AppointmentFormVM
+            {
+                Appointment = appointment,
+                Clients = await LoadSelectList("clients"),
+                Employees = await LoadSelectList("employees"),
+                Statuses = await LoadSelectList("statuses"),
+                Spots = await LoadSelectList("spots"),
+                Services = await LoadMultiSelectList("services", appointment.ServiceIds)
+            };
+
+            return View(vm);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, AppointmentVM appointment)
+        public async Task<IActionResult> Edit(int id, AppointmentFormVM vm)
         {
-            var jsonContent = JsonContent.Create(appointment);
-            var response = await _httpClient.PutAsync($"{_apiBaseUrl}/{id}", jsonContent);
 
-            if (response.IsSuccessStatusCode)
-                return RedirectToAction(nameof(Index));
+            if (!ModelState.IsValid)
+            {
+                // повторно загрузим списки
+                vm.Clients = await LoadSelectList("clients");
+                vm.Employees = await LoadSelectList("employees");
+                vm.Statuses = await LoadSelectList("statuses");
+                vm.Spots = await LoadSelectList("spots");
+                vm.Services = await LoadSelectList("services");
+                return View(vm);
+            }
 
-            ModelState.AddModelError("", "Ошибка при редактировании.");
-            return View(appointment);
+            var content = new StringContent(
+                JsonSerializer.Serialize(vm.Appointment),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await _httpClient.PutAsync($"{_apiBaseUrl}/{id}", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                vm.Clients = await LoadSelectList("clients");
+                vm.Employees = await LoadSelectList("employees");
+                vm.Statuses = await LoadSelectList("statuses");
+                vm.Spots = await LoadSelectList("spots");
+                vm.Services = await LoadSelectList("services");
+
+                ModelState.AddModelError("", "Ошибка при отправке данных на сервер.");
+                return View(vm);
+            }
+
+            return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Delete(int id)

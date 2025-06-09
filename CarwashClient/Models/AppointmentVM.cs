@@ -34,5 +34,7 @@ namespace CarwashClient.Models
 
         [DisplayName("Статус")]
         public string StatusName { get; set; } = string.Empty;
+
+        public string[] Services { get; set; } = [];
     }
 }

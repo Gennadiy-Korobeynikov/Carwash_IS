@@ -25,5 +25,6 @@ namespace CarwashClient.Models
         public List<SelectListItem> Statuses { get; set; } = new();
         public List<SelectListItem> Spots { get; set; } = new();
         public List<SelectListItem> Services { get; set; } = new();
+
     }
 }

@@ -52,6 +52,22 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SpotNumber)
         </dd>
+        <dt class="col-sm-2">Услуги</dt>
+        <dd class="col-sm-10">
+            @if (Model.Services != null && Model.Services.Any())
+            {
+                <ul>
+                    @foreach (var service in Model.Services)
+                    {
+                        <li>@service</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>Нет услуг</span>
+            }
+        </dd>
     </dl>
 </div>
 <div>
