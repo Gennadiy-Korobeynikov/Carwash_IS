@@ -64,11 +64,11 @@ public partial class CarwashDbContext : DbContext
                     "AppointmentsService",
                     r => r.HasOne<Service>().WithMany()
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .HasConstraintName("Какие услуги выбраны_Service"),
                     l => l.HasOne<Appointment>().WithMany()
                         .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .HasConstraintName("Какие услуги выбраны_Appointment"),
                     j =>
                     {

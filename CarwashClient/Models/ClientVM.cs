@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace CarwashClient.Models
 {
@@ -7,11 +8,12 @@ namespace CarwashClient.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Номер телефона обязателен")]
+        [DisplayName("Номер телефона")]
+        [Required(ErrorMessage = "Необходимо ввести номер телефона")]
         [StringLength(11, ErrorMessage = "Макс. длина — 11 символов")]
+        [Phone(ErrorMessage = "Некорректный формат номера телефона")]
         public string TelNumber { get; set; }
 
-        [Required(ErrorMessage = "Имя обязательно")]
         [StringLength(255)]
         public string Name { get; set; }
 
