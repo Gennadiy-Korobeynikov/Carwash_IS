@@ -29,8 +29,8 @@ namespace CarwashClient.Models
         [DisplayName("Мойщик")]
         public string EmployeeName { get; set; } = string.Empty;
 
-        [DisplayName("Позиция в боксе")]
-        public int SpotNumber{ get; set; }
+        [DisplayName("Бокс и место")]
+        public string SpotNumber { get; set; } = string.Empty;
 
         [DisplayName("Статус")]
         public string StatusName { get; set; } = string.Empty;

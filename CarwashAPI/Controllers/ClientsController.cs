@@ -95,7 +95,7 @@ namespace CarwashAPI.Controllers
                     Console.WriteLine(ex.InnerException.Message);
                 }
 
-                // Можно пробросить дальше или вернуть 500
+               
                 throw;
             }
 

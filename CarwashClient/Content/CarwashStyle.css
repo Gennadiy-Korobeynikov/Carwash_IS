@@ -1,0 +1,104 @@
+﻿.MainText {
+    color: #FFF0F5;
+    background-color: #3EB489 !important;
+}
+
+.RemoveItemBtn {
+    background: none;
+    border: none;
+}
+
+
+    .RemoveItemBtn i {
+        color: orangered;
+    }
+
+.round-button {
+    display: inline-flex; /* Центровка содержимого */
+    justify-content: center;
+    align-items: center;
+    width: 60px; /* Диаметр кнопки */
+    height: 60px;
+    border-radius: 50%; /* Делаем кнопку круглой */
+    background-color: var(--button-bg-color, #007bff);
+    color: #fff; /* Белый цвет текста/иконки */
+    text-decoration: none; /* Убираем подчеркивание */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Плавный переход для масштаба и цвета */
+}
+
+    .round-button:hover {
+        transform: scale(1.2); /* Увеличение размера при наведении */
+        background-color: var(--button-bg-hover-color, #0056b3); /* Цвет при наведении */
+    }
+
+    .round-button i {
+        font-size: 1.5rem; /* Размер иконки */
+        color: aliceblue;
+    }
+
+.bg-red {
+    --button-bg-color: #dc3545;
+    --button-bg-hover-color: #a71d2a;
+}
+
+.bg-green {
+    --button-bg-color: #50C878;
+    --button-bg-hover-color: #3da860;
+}
+
+.bg-lightblue {
+    --button-bg-color: #4169E1;
+    --button-bg-hover-color: #3151b0;
+}
+
+.bg-darkblue {
+    --button-bg-color: #8960f7;
+    --button-bg-hover-color: #6c49cc;
+}
+
+
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+
+    [data-tooltip]:hover::after {
+        content: attr(data-tooltip); /* Текст из атрибута */
+        position: absolute;
+        bottom: 120%; /* Над кнопкой */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.75); /* Темный фон */
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 100;
+        opacity: 1;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+
+    [data-tooltip]:hover::before {
+        content: '';
+        position: absolute;
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px;
+        border-style: solid;
+        border-color: rgba(0, 0, 0, 0.75) transparent transparent transparent;
+        z-index: 100;
+        opacity: 1;
+        transition: opacity 0.3s;
+    }
+
+.form-group.disabled {
+    pointer-events: none; /* Предотвращает все события мыши */
+    opacity: 0.6; /* Придает слегка затемненный вид */
+}
+
+    .form-group.disabled * {
+        pointer-events: none; /* Распространяет на все дочерние элементы */
+    }

@@ -1,77 +1,70 @@
 ﻿@model IEnumerable<CarwashClient.Models.AppointmentVM>
 
 @{
-    ViewData["Title"] = "Apps";
+    ViewBag.Title = "Список записей";
 }
 
-<h1>Index</h1>
+<div class="row">
+    <h2 style="text-align: center; font-family: sans-serif; font-weight: bold;">Список записей</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+    <div class="text-end">
+            <a href="@Url.Action("Create", "Appointments", null)" class="round-button bg-green" data-tooltip="Добавить запись">
+                <i class="bi bi-plus-circle"></i>
+            </a>
+        </div>
+</div>
+
+<table class="table table-striped table-hover mt-3">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cost)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClientName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StatusName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpotNumber)
-            </th>
-            <th></th>
+            <th class="MainText">Дата</th>
+            <th class="MainText">Время</th>
+            <th class="MainText">Стоимость</th>
+            <th class="MainText">Клиент</th>
+            <th class="MainText">Сотрудник</th>
+            <th class="MainText">Статус</th>
+            <th class="MainText">Номер места</th>
+                <th class="MainText">Действия</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClientName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EmployeeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusName)
-            </td>
-            <td>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Time)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusName)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.SpotNumber)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id= item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
-}
+                </td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Appointments", new { id = item.Id })" data-tooltip="Редактировать">
+                            <i class="bi bi-pencil fs-1 text-info"></i>
+                        </a>
+                        <a href="@Url.Action("Details", "Appointments", new { id = item.Id })" data-tooltip="Подробнее">
+                        <i class="bi bi-info-circle fs-1 text-success"></i>
+                        </a>
+                        <a href="@Url.Action("Delete", "Appointments", new { id = item.Id })" data-tooltip="Удалить">
+                            <i class="bi bi-trash fs-1 text-danger"></i>
+                        </a>
+                    </td>
+            </tr>
+        }
     </tbody>
 </table>

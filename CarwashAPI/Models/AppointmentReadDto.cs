@@ -10,7 +10,7 @@
 
         public string ClientName { get; set; } = string.Empty;
         public string EmployeeName { get; set; } = string.Empty;
-        public int SpotNumber { get; set; }
+        public string SpotNumber { get; set; } = string.Empty ;
         public string StatusName { get; set; } = string.Empty;
 
         public List<string> Services { get; set; } = new();

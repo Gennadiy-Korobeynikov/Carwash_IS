@@ -33,13 +33,16 @@ namespace CarwashAPI.Controllers
                     .Select(a => new AppointmentReadDto
                     {
                         Id = a.Id,
-                        Date= a.DateTime,
+                        Date = a.DateTime,
                         Time = a.DateTime.TimeOfDay,
                         Cost = a.Cost,
                         ClientName = a.Client.Name,
-                        EmployeeName = a.Employee.LastName,
+                        EmployeeName = $"{a.Employee.LastName} " +
+               $"{(string.IsNullOrEmpty(a.Employee.FirstName) ? "" : a.Employee.FirstName[0] + ".")}" +
+               $"{(string.IsNullOrEmpty(a.Employee.MidName) ? "" : a.Employee.MidName[0] + ".")}",
+
                         StatusName = a.Status.Name,
-                        SpotNumber = a.Spot.Number,
+                        SpotNumber = $"Бокс: {a.Spot.BoxId} место: {a.Spot.Number}",
                         Services = a.Services.Select(s => s.Name).ToList()
                     })
                     .ToListAsync();
@@ -73,7 +76,7 @@ namespace CarwashAPI.Controllers
                 Cost = appointment.Cost,
                 ClientName = appointment.Client.Name,
                 EmployeeName = appointment.Employee.LastName,
-                SpotNumber = appointment.Spot.Number,
+                SpotNumber = $"Бокс: {appointment.Spot.BoxId} место: {appointment.Spot.Number}",
                 StatusName = appointment.Status.Name,
                 Services = appointment.Services.Select(s => s.Name).ToList()
             };
@@ -113,7 +116,7 @@ namespace CarwashAPI.Controllers
             var appointment = new Appointment
             {
                 DateTime = dto.DateTime,
-                Cost = dto.Cost,
+                Cost = 0,
                 ClientId = dto.ClientId,
                 EmployeeId = dto.EmployeeId,
                 SpotId = dto.SpotId,
@@ -127,10 +130,29 @@ namespace CarwashAPI.Controllers
             appointment.Services = services;
 
             _context.Appointments.Add(appointment);
-            await TrySave();
+            try
+            {
+                 await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                // Логируем основную ошибку
+                Console.WriteLine("Ошибка при сохранении в БД:");
+                Console.WriteLine(ex.Message);
+
+                // Подробности
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Внутреннее исключение:");
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+
+                throw;
+            }
 
 
-            return CreatedAtAction("GetClient", new { id = appointment.Id }, appointment);
+            return Ok(dto);
         }
 
         // DELETE: api/Appointments/5
@@ -144,7 +166,26 @@ namespace CarwashAPI.Controllers
             }
 
             _context.Appointments.Remove(appointment);
-            await TrySave();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.OutputEncoding = System.Text.Encoding.UTF8;
+                // Логируем основную ошибку
+                Console.WriteLine("Ошибка при сохранении в БД:");
+                Console.WriteLine(ex.Message);
+
+                // Подробности
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Внутреннее исключение:");
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+
+                throw;
+            }
 
             return NoContent();
         }

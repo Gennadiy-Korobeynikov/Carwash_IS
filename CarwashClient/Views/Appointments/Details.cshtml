@@ -1,13 +1,12 @@
 ﻿@model CarwashClient.Models.AppointmentVM
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали";
 }
 
-<h1>Details</h1>
+<h1>Подробности о записи на обслуживание</h1>
 
 <div>
-    <h4>AppointmentVM</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -71,6 +70,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id }) |
-    <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Редактировать", "Edit", new {  id = Model.Id }) |
+    <a asp-action="Index">Отмена</a>
 </div>

@@ -23,9 +23,23 @@ namespace CarwashAPI.Controllers
 
         // GET: api/StatusesController
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Service>>> GetStatuses()
+        public async Task<ActionResult<IEnumerable<Service>>> GetServices()
         {
             return await _context.Services.ToListAsync();
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Service>> GetService(int id)
+        {
+            var service = await _context.Services.FindAsync(id);
+
+            if (service == null)
+            {
+                return NotFound();
+            }
+
+            return service;
         }
     }
 }

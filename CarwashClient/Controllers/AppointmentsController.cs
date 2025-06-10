@@ -45,6 +45,8 @@ namespace CarwashClient.Controllers
                 Spots = await LoadSelectList("spots"),
                 Services = await LoadSelectList("services")
             };
+            vm.Appointment.DateTime = DateTime.Now.Date;
+
 
             return View(vm);
         }
@@ -62,7 +64,7 @@ namespace CarwashClient.Controllers
                 vm.Services = await LoadSelectList("services");
                 return View(vm);
             }
-
+             //vm.Appointment.Cost = 0;
             var content = new StringContent(
                 JsonSerializer.Serialize(vm.Appointment),
                 Encoding.UTF8,
@@ -78,7 +80,7 @@ namespace CarwashClient.Controllers
                 vm.Spots = await LoadSelectList("spots");
                 vm.Services = await LoadSelectList("services");
 
-                ModelState.AddModelError("", "Ошибка при отправке данных на сервер.");
+                ModelState.AddModelError("", "Это место на это время уже занято.");
                 return View(vm);
             }
 
@@ -99,23 +101,7 @@ namespace CarwashClient.Controllers
                 .ToList();
         }
 
-        private async Task<List<SelectListItem>> LoadMultiSelectList(string endpoint, List<int> selectedIds)
-        {
-            var response = await _httpClient.GetAsync($"{_apiBaseBaseUrl}/{endpoint}");
-            var json = await response.Content.ReadAsStringAsync();
 
-            var items = JsonSerializer.Deserialize<List<IdNameDto>>(json, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-
-            return items.Select(i => new SelectListItem
-            {
-                Value = i.Id.ToString(),
-                Text = i.Name,
-                Selected = selectedIds.Contains(i.Id)
-            }).ToList();
-        }
 
         private class IdNameDto
         {
@@ -138,7 +124,7 @@ namespace CarwashClient.Controllers
                 Employees = await LoadSelectList("employees"),
                 Statuses = await LoadSelectList("statuses"),
                 Spots = await LoadSelectList("spots"),
-                Services = await LoadMultiSelectList("services", appointment.ServiceIds)
+                Services = await LoadSelectList("services")
             };
 
             return View(vm);

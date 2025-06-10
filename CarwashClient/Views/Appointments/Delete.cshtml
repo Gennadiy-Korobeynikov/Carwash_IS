@@ -1,14 +1,13 @@
 ﻿@model CarwashClient.Models.AppointmentVM
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Удалить";
 }
 
-<h1>Delete</h1>
+<h1>Удаление записи</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Удалить эту запись?</h3>
 <div>
-    <h4>AppointmentVM</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -62,7 +61,7 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Удалить" class="btn btn-danger" /> |
+        <a asp-action="Index">Отмена</a>
     </form>
 </div>
